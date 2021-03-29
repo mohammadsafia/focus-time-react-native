@@ -6,9 +6,16 @@ import { Timer } from './src/features/timer/Timer';
 
 import { colors, spacing } from './src/util';
 
+import { IFocusHistory, STATUSES, StringOrNull } from './src/interfaces';
+
 const App = () => {
 
-    const [focusSubject, setFocusSubject] = useState<string | null>(null);
+    const [focusSubject, setFocusSubject] = useState<StringOrNull>(null);
+    const [focusHistory, setFocusHistory] = useState<IFocusHistory[]>([]);
+
+    const addFocusHistorySubjectWithStatus = (subject: string, status: STATUSES) => {
+        setFocusHistory([...focusHistory, { subject, status }]);
+    };
 
     return (
         <View style={ styles.container }>
@@ -16,13 +23,19 @@ const App = () => {
                 <Timer
                     focusSubject={ focusSubject }
                     onTimerEnd={ () => {
+                        addFocusHistorySubjectWithStatus(focusSubject, STATUSES.COMPLETE);
                         setFocusSubject(null);
                     } }
-                    clearSubject={ () => setFocusSubject(null) }
+                    clearSubject={ () => {
+                        setFocusSubject(null);
+                        addFocusHistorySubjectWithStatus(focusSubject, STATUSES.CANCELED);
+                    } }
                 />
             ) : (
                 <Focus addSubject={ setFocusSubject }/>
             ) }
+
+
         </View>
     );
 };
