@@ -13,7 +13,7 @@ import { ITimerComponentProps } from '../../interfaces';
 
 const DEFAULT_TIME = 1;
 
-export const Timer: React.FC<ITimerComponentProps> = ({ focusSubject, onTimerEnd }) => {
+export const Timer: React.FC<ITimerComponentProps> = ({ focusSubject, onTimerEnd, clearSubject }) => {
     useKeepAwake();
 
     const [minutes, setMinutes] = useState<number>(DEFAULT_TIME);
@@ -77,6 +77,9 @@ export const Timer: React.FC<ITimerComponentProps> = ({ focusSubject, onTimerEnd
                     <RoundedButton onPress={ () => setIsStarted(true) } title="start"/>
                 ) }
             </View>
+            <View style={styles.clearSubject}>
+                <RoundedButton title="-" size={50} onPress={clearSubject}/>
+            </View>
         </View>
     );
 };
@@ -106,4 +109,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    clearSubject: {
+        paddingBottom: 25,
+        paddingLeft: 25,
+    }
 });
